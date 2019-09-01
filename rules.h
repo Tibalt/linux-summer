@@ -3,6 +3,12 @@
 
 #define LANE_LENGTH 100*1000           //m
 
+
+
+int lane1[LANE_LENGTH];
+int lane2[LANE_LENGTH];
+
+
 /*
 * so for the same car,  it could go insane INSANE_POSSIBILITY times every 1000*1000 seconds 
 * and the insane status only last 5 seconds
