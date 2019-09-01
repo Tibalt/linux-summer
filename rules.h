@@ -2,11 +2,21 @@
 #define RULES_H
 
 #define LANE_LENGTH 100*1000           //m
-
-
-
-int lane1[LANE_LENGTH];
+int lane1[LANE_LENGTH];//todo:here we wasted very much memory
 int lane2[LANE_LENGTH];
+
+
+//we assume that every CAR_MADE_SPEED seconds, 
+//there is a car from car factory
+#define CAR_MADE_SPEED 10     
+
+//we assume that the brake or accelation speed are the same
+//todo: should be different from car to car
+#define ACCELERATION 3 
+
+
+#define DEFAULT_SIMULATION_TIME 100  //seconds
+
 
 
 /*
@@ -20,7 +30,7 @@ int lane2[LANE_LENGTH];
 * probably follow the rules below
 */
 #define MIN_SPEED 20             //   m/s  
-#define MAX SPEED 40             //   m/s  
+#define MAX_SPEED 40             //   m/s  
 
 
 
@@ -39,7 +49,7 @@ int lane2[LANE_LENGTH];
 */
 #define SAMELANE_FRONTCAR_SPACE 90      //m
 #define OTHERLANE_FRONTCAR_SPACE 120    //m
-#define OTHERLANE_BACKCAR_SPACE 120     //m
+#define OTHERLANE_REARCAR_SPACE 120     //m
 
 
 
