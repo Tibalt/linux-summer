@@ -1,0 +1,3 @@
+/home/tibalt/linux-summer/CMakeFiles/edit_cache.dir
+/home/tibalt/linux-summer/CMakeFiles/rebuild_cache.dir
+/home/tibalt/linux-summer/CMakeFiles/road.dir

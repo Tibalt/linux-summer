@@ -1,21 +1,20 @@
 #ifndef RULES_H
 #define RULES_H
 
-#define LANE_LENGTH 100*1000           //m
-int lane1[LANE_LENGTH];//todo:here we wasted very much memory
-int lane2[LANE_LENGTH];
 
+const int LANE_LENGTH{100*1000}; 
 
 //we assume that every CAR_MADE_SPEED seconds, 
 //there is a car from car factory
-#define CAR_MADE_SPEED 10     
+const int CAR_MADE_SPEED{10};
+
+const int DEFAULT_SIMULATION_TIME{100};//seconds
 
 //we assume that the brake or accelation speed are the same
 //todo: should be different from car to car
 #define ACCELERATION 3 
 
 
-#define DEFAULT_SIMULATION_TIME 100  //seconds
 
 
 
@@ -29,8 +28,8 @@ int lane2[LANE_LENGTH];
 * we assume that the driver is reasonable so that he
 * probably follow the rules below
 */
-#define MIN_SPEED 20             //   m/s  
-#define MAX_SPEED 40             //   m/s  
+#define MIN_SPEED 15             //   m/s  
+//#define MAX_SPEED 40             //   m/s  
 
 
 
