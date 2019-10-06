@@ -141,7 +141,7 @@ int road::tick(){
 
     
     
-    if(this->left_lane_green && dice::if_dice(10)){
+    if(this->left_lane_green && dice::if_dice(20)){
 
         std::shared_ptr<vehicle> p = vehicleFactory::spit_vehicle(
           this->right_lane.empty()?  this->right_lane.end():
@@ -157,7 +157,7 @@ int road::tick(){
     }
 
     //spit vehicle for right lane
-    if(this->right_lane_green && dice::if_dice(5)){
+    if(this->right_lane_green && dice::if_dice(30)){
 
         std::shared_ptr<vehicle> p = vehicleFactory::spit_vehicle(
           this->left_lane.empty()? this->left_lane.end():
@@ -419,6 +419,8 @@ int road::acceleration_checkcrash( const std::list<std::shared_ptr<vehicle>>::it
         (*it)->acceleration();
 
     }
+
+    std::cout << "speed after changing:"<<(*it)->get_speed()<<std::endl;
 
     if( (*it)->get_position() >  100*1000){
         lane.erase(it);

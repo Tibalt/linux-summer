@@ -19,10 +19,10 @@ class dice{
                 return true; 
 
             if(static_cast<unsigned int>(rand())%100 > possibility) {
-                return true;
+                return false;
             }
             else
-                return false;
+                return true;
         }
 
         static unsigned int possibility_dice(){
@@ -55,7 +55,7 @@ public:
         else if(type == 3){
             //unsigned int cw =dice::possibility_dice(); 
             //std::cout << "cw is "<<cw<<std::endl;
-            unsigned int speed = dice::number_dice(10);
+            unsigned int speed = dice::number_dice(40);
             p = std::make_shared<van>(it,pass_end,speed < MIN_SPEED? MIN_SPEED:speed);
             std::cout  << " position = " << p->get_position()
                 << " speed = " << p->get_speed()

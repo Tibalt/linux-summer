@@ -5,13 +5,14 @@
 
 
 vehicle::vehicle(std::list<std::shared_ptr<vehicle>>::iterator it,
-            std::list<std::shared_ptr<vehicle>>::iterator pass_end,unsigned int speed){
+            std::list<std::shared_ptr<vehicle>>::iterator pass_end,unsigned int speed,unsigned int speed_limit){
 
     //this->changeLane_willingness=c_w;
     this->frontVehicle_otherlane = it;
     this->pass_end_otherlane = pass_end;
 
     this->speed = speed;
+    this->speed_limit = speed_limit;
     this->position = 0;
     this->isInsane = false;
 }

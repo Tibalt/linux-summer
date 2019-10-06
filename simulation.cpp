@@ -23,6 +23,6 @@ int main(int argc,char* args[]){
             highway.list_vehicles();
             break;
         }
-        //highway.status();
+        highway.status();
     }
 }

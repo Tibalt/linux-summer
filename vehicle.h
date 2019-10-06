@@ -9,7 +9,7 @@
 class vehicle{
 public:
     vehicle( std::list<std::shared_ptr<vehicle>>::iterator,
-            std::list<std::shared_ptr<vehicle>>::iterator,unsigned int );
+            std::list<std::shared_ptr<vehicle>>::iterator,unsigned int,unsigned int );
 
     virtual std::string get_name()=0;
     virtual unsigned int get_speedlimit()=0;
@@ -73,6 +73,7 @@ private:
     
     //auto frontVehicle_otherlane;
     //std::list<std::shared_ptr<vehicle>>::iterator rearVehicle_leftlane;
+    unsigned int speed_limit;
 
     int acceleration_max;
     int brake_max;

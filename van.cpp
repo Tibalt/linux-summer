@@ -8,7 +8,7 @@
 
 van::van( lane_iterator it,
          lane_iterator pass_end, unsigned int speed)
-                :vehicle(it,pass_end,speed){
+                :vehicle(it,pass_end,speed,40){
 
      this->accLimit = 40;
      this->accCo = 4;
@@ -37,6 +37,6 @@ std::string van::get_name(){
 
 
 
-static unsigned int van::get_speedlimit(){
+unsigned int van::get_speedlimit(){
     return 40;
 }

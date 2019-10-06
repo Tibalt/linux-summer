@@ -13,10 +13,10 @@ public:
     std::string get_name();
     int acceleration();
     int brake();
-    static unsigned int get_speedlimit();
+    unsigned int get_speedlimit();
 
 private:
-    unsigned int speed_limit;
+    //unsigned int speed_limit;
     
 
 };
