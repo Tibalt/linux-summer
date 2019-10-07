@@ -10,9 +10,10 @@ int main(int argc,char* args[]){
     srand (time(NULL));
 
     road highway;
-    highway.status();
+    //highway.status();
     while(true){
         highway.tick();    
+        highway.list_vehicles();
         usleep(1000*1000);
         if(!highway.is_alive()){
             std::cout << std::endl;
@@ -23,6 +24,6 @@ int main(int argc,char* args[]){
             highway.list_vehicles();
             break;
         }
-        highway.status();
+        //highway.status();
     }
 }

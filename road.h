@@ -22,14 +22,11 @@ public:
     bool is_alive();
 
 private:
-    int change_lane( std::list<std::shared_ptr<vehicle>>::iterator& it,
-                     std::list<std::shared_ptr<vehicle>>& other_lane,
-                     std::list<std::shared_ptr<vehicle>>& this_lane);
+    int change_lane( std::list<std::shared_ptr<vehicle>>::iterator& it,bool);
 
     int move( std::list<std::shared_ptr<vehicle>>::iterator);
     int acceleration_checkcrash( const std::list<std::shared_ptr<vehicle>>::iterator it,
-                                 bool& green_light,
-                                 std::list<std::shared_ptr<vehicle>>& lane);
+                                 bool if_left);
 
 
     bool get_vehicle_distances(int& fs,int& fs_ol,int& rs_ol,

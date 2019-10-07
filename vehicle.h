@@ -41,6 +41,7 @@ public:
 
     std::list<std::shared_ptr<vehicle>>::iterator get_frontVehicle_otherlane();
     void set_frontVehicle_otherlane(std::list<std::shared_ptr<vehicle>>::iterator,std::list<std::shared_ptr<vehicle>>::iterator);
+    void set_frontVehicle_otherlane(std::list<std::shared_ptr<vehicle>>::iterator);
 
     //std::list<vehicle*>::iterator get_frontVehicle_otherlane();
     //int set_frontVehicle_otherlane(std::list<vehicle*>::iterator);

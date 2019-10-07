@@ -6,7 +6,6 @@ const int LANE_LENGTH{100*1000};
 
 //we assume that every CAR_MADE_SPEED seconds, 
 //there is a car from car factory
-const int CAR_MADE_SPEED{10};
 
 const int DEFAULT_SIMULATION_TIME{100};//seconds
 

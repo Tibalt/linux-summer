@@ -5,7 +5,7 @@
 
 
 bool bold::change_lane(int front_space, int frontspace_otherlane,int rearspace_otherlane){
-    if(front_space < MIN_SPACE && frontspace_otherlane > MIN_SPACE && rearspace_otherlane > MIN_SPACE)
+    if( frontspace_otherlane > MIN_SPACE && rearspace_otherlane > MIN_SPACE)
         return true;
     else
         return false;

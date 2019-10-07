@@ -15,6 +15,7 @@ vehicle::vehicle(std::list<std::shared_ptr<vehicle>>::iterator it,
     this->speed_limit = speed_limit;
     this->position = 0;
     this->isInsane = false;
+    this->changing_tick =0;
 }
 
 unsigned int vehicle::get_score(){
@@ -44,24 +45,6 @@ unsigned int vehicle::get_frontSpace(){
     else
        return LANE_LENGTH;
 }
-//int vehicle::set_frontSpace(const unsigned int fs){
-   //this->frontSpace += fs; 
-   //return this->frontSpace;
-//}
-
-//int vehicle::get_rearSpace_otherlane(){
-//    return this->rearSpace_otherlane; 
-//}
-//int vehicle::set_rearSpace_otherlane(const unsigned int rs_o){
-//   return this->rearSpace_otherlane = rs_o;
-//}
-
-//int vehicle::get_frontSpace_otherlane(){
-//    return this->frontSpace_otherlane; 
-//}
-//int vehicle::set_frontSpace_otherlane(const unsigned int fs_o){
-//    this->frontSpace_otherlane = fs_o;
-//}
 
 bool vehicle::is_Insane(){
     return this->isInsane;
@@ -76,6 +59,9 @@ void vehicle::set_frontVehicle_otherlane(std::list<std::shared_ptr<vehicle>>::it
                                         std::list<std::shared_ptr<vehicle>>::iterator pass_end){
     this->frontVehicle_otherlane = it;
     this->pass_end_otherlane = pass_end;
+}
+void vehicle::set_frontVehicle_otherlane(std::list<std::shared_ptr<vehicle>>::iterator it){
+    this->frontVehicle_otherlane = it;
 }
 
 bool vehicle::get_changeLane_willingness(int fs,int fs_o,int rs_o){

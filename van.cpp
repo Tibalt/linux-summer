@@ -19,7 +19,7 @@ van::van( lane_iterator it,
 
 
 
-    if(dice::if_dice(20))
+    if(dice::if_dice(100))
         this->vehicle_driver= std::make_shared<bold>();
     else
         this->vehicle_driver= std::make_shared<cautious>();

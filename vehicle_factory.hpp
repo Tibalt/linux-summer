@@ -57,9 +57,9 @@ public:
             //std::cout << "cw is "<<cw<<std::endl;
             unsigned int speed = dice::number_dice(40);
             p = std::make_shared<van>(it,pass_end,speed < MIN_SPEED? MIN_SPEED:speed);
-            std::cout  << " position = " << p->get_position()
-                << " speed = " << p->get_speed()
-                << " if_insane = " <<p->is_Insane()<<std::endl;
+            //std::cout  << " position = " << p->get_position()
+                //<< " speed = " << p->get_speed()
+                //<< " if_insane = " <<p->is_Insane()<<std::endl;
         }
         else
             std::cout << "check how many vehicle types do you have?"<<std::endl;
