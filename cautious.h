@@ -5,7 +5,7 @@
 #include "driver.h"
 
 
-class cautious:public driver{
+class CautiousDriver:public driver{
 
 public:
     virtual bool change_lane(int front_space, int frontspace_otherlane,int rearspace_otherlane);

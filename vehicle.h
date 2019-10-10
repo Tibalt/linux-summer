@@ -58,39 +58,38 @@ public:
 
 
 private:
-    //unsigned int changeLane_willingness;
+    std::string m_name;
+    bool m_isInsane;
 
-    std::string name;
-    bool isInsane;
+    //iterator for front vehicle in other lane,
+    //the benefit of iterator is that
+    //we have all the information of the other lane
+    //so that we can update vehicle when some vehicles change lane
+    std::list<std::shared_ptr<vehicle>>::iterator m_frontVehicle_otherlane;
 
-    //int frontSpace;
-    //int rearSpace_otherlane;
-    //int frontSpace_otherlane;
 
-    std::list<std::shared_ptr<vehicle>>::iterator frontVehicle_otherlane;
-    std::list<std::shared_ptr<vehicle>>::iterator pass_end_otherlane;
+    //we need end iterator to validate the iterator
+    std::list<std::shared_ptr<vehicle>>::iterator m_end_otherlane;
 
 
     
     //auto frontVehicle_otherlane;
     //std::list<std::shared_ptr<vehicle>>::iterator rearVehicle_leftlane;
-    unsigned int speed_limit;
+    unsigned int m_speed_limit;
 
-    int acceleration_max;
-    int brake_max;
+    int m_brake_max;
 
-    unsigned int position;
-    unsigned int speed;
-    unsigned int score;
+    unsigned int m_position;
+    unsigned int m_speed;
+    unsigned int m_score;
 
-    unsigned int changing_tick;
+    unsigned int m_changing_tick;
 
-    bool isShadow = false;
 
 protected: 
-    unsigned int accLimit;
-    unsigned int accCo;
-    std::shared_ptr<driver> vehicle_driver;
+    unsigned int m_accLimit;
+    unsigned int m_accCo;
+    std::shared_ptr<driver> m_vehicle_driver;
     
 
 

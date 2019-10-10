@@ -3,18 +3,20 @@
 #include "road.h"
 #include <unistd.h>
 #include <iostream>
+#include <time.h>
 #include <stdlib.h>     /* srand, rand */
 
 
 int main(int argc,char* args[]){
     srand (time(NULL));
 
-    road highway;
+    Road highway;
     //highway.status();
+    std::cout <<"simulation started"<<std::endl;
     while(true){
-        highway.tick();    
+        highway.tick();
         highway.list_vehicles();
-        usleep(1000*1000);
+        usleep(1000*100);
         if(!highway.is_alive()){
             std::cout << std::endl;
             std::cout << std::endl;

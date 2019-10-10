@@ -10,8 +10,8 @@ van::van( lane_iterator it,
          lane_iterator pass_end, unsigned int speed)
                 :vehicle(it,pass_end,speed,40){
 
-     this->accLimit = 40;
-     this->accCo = 4;
+     this->m_accLimit = 40;
+     this->m_accCo = 4;
 
     if(speed > 40)
         this->set_speed(40);
@@ -20,9 +20,9 @@ van::van( lane_iterator it,
 
 
     if(dice::if_dice(100))
-        this->vehicle_driver= std::make_shared<bold>();
+        this->m_vehicle_driver= std::make_shared<BoldDriver>();
     else
-        this->vehicle_driver= std::make_shared<cautious>();
+        this->m_vehicle_driver= std::make_shared<CautiousDriver>();
     
 }
 

@@ -4,7 +4,7 @@
 
 
 
-class bold:public driver{
+class BoldDriver:public driver{
 
 public:
     virtual bool change_lane(int front_space, int frontspace_otherlane,int rearspace_otherlane);

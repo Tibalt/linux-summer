@@ -5,49 +5,65 @@
 
 
 
-road::~road(){
+Road::~Road(){
     
 
 }
-road::road(){
+Road::Road(){
     //this->right_lane= std::list<vehicle*>{};
     //this->left_lane=std::list<vehicle*>{};
-    this->left_lane_green = true;
-    this->right_lane_green = true;
+    this->m_left_lane_green = true;
+    this->m_right_lane_green = true;
 }
-void road::list_vehicles(){
+void Road::list_vehicles(){
     std::cout<<"vehicles:"<<  std::endl;
-    //std::cout <<"ID,""pos,""speed "<<std::endl; 
-    for(auto it=this->left_lane.rbegin();it!=this->left_lane.rend();it++)
-        std::cout <<(*it)->get_score()<<","<<(*it)->get_position()<<","<<(*it)->get_speed()<<"L"<<std::endl; 
+    for(auto const& pVehicle:this->m_left_lane){
+        std::cout <<pVehicle->get_score()<<","<<pVehicle->get_position() <<","<<pVehicle->get_speed()<<",";
+        if(pVehicle->get_frontVehicle_otherlane() == m_right_lane.end())
+                     std::cout << "NULL,L";
+        else
+            std::cout << (*pVehicle->get_frontVehicle_otherlane())->get_position()<<"L";
+        std::cout <<std::endl;
+    }
 
-    //std::cout <<"ID,""pos,""speed "<<std::endl; 
-    for(auto it=this->right_lane.rbegin();it!=this->right_lane.rend();it++)
-        std::cout <<(*it)->get_score()<<","<<(*it)->get_position()<<","<<(*it)->get_speed()<<"R"<<std::endl; 
+    for(auto const& pVehicle:this->m_right_lane){
+        std::cout <<pVehicle->get_score()<<","<<pVehicle->get_position() <<","<<pVehicle->get_speed()<<",";
+        if(pVehicle->get_frontVehicle_otherlane() == m_left_lane.end())
+                     std::cout << "NULL,R";
+        else
+            std::cout << (*pVehicle->get_frontVehicle_otherlane())->get_position()<<"R";
+        std::cout <<std::endl;
+     }
 }
 
-bool road::is_alive(){
-    return this->left_lane_green || this->left_lane_green;
+bool Road::is_alive(){
+    return this->m_left_lane_green || this->m_right_lane_green;
 }
 
-bool road::get_vehicle_distances(int& fs,int& fs_ol,int& rs_ol,
+bool Road::get_vehicle_distances(int& fs,int& fs_ol,int& rs_ol,
         std::list<std::shared_ptr<vehicle>>::iterator& it,
         bool if_left){
 
     std::list<std::shared_ptr<vehicle>>  *this_lane, *other_lane;
 
     if(if_left){
-        this_lane = &(this->left_lane);
-        other_lane = &(this->right_lane);
+        this_lane = &(this->m_left_lane);
+        other_lane = &(this->m_right_lane);
     }
     else{
-        this_lane = &(this->right_lane);
-        other_lane =&(this->left_lane);
+        this_lane = &(this->m_right_lane);
+        other_lane =&(this->m_left_lane);
     }
 
-    if(it == this_lane->end())
+    if(it == this_lane->end()){
+        std::cout<<"invalid this lane iterator"<<std::endl;
         return false;     
-        
+    }
+    if(it == other_lane->end()){
+        std::cout<<"invalid other lane iterator"<<std::endl;
+        return false;
+    }
+
     fs = LANE_LENGTH;
     fs_ol=LANE_LENGTH;
     rs_ol=(*it)->get_position();
@@ -70,7 +86,7 @@ bool road::get_vehicle_distances(int& fs,int& fs_ol,int& rs_ol,
     }
     return true;
 }
-void road::status(){
+void Road::status(){
 
     //current tick
     //todo:
@@ -80,14 +96,14 @@ void road::status(){
 
     //vehicles in first 100 meters
 
-    std::cout<<"tick:"<< this->tick_tag << std::endl;
+    std::cout<<"tick:"<< this->m_tick_tag << std::endl;
 
 
-    if(this->left_lane_green){
+    if(this->m_left_lane_green){
 
         for(int i=0;i<100;i++){
-            auto it =this->left_lane.rbegin();
-            for(;it!=this->left_lane.rend();it++) {
+            auto it =this->m_left_lane.rbegin();
+            for(;it!=this->m_left_lane.rend();it++) {
                 //std::cout<<(*it)->get_position();
                 if((*it)->get_position() == i){
                     std::cout<<"v";
@@ -101,16 +117,16 @@ void road::status(){
                 else
                     continue;
             }
-            if(it == this->left_lane.rend())
+            if(it == this->m_left_lane.rend())
                 std::cout<<"-";
         }
         std::cout << std::endl;
     }
 
-    if(this->right_lane_green){
+    if(this->m_right_lane_green){
         for(int i=0;i<100;i++){
-            auto it =this->right_lane.rbegin();
-            for(;it!=this->right_lane.rend();it++) {
+            auto it =this->m_right_lane.rbegin();
+            for(;it!=this->m_right_lane.rend();it++) {
                 //std::cout<<(*it)->get_position();
                 if((*it)->get_position() == i){
                     std::cout<<"v";
@@ -123,7 +139,7 @@ void road::status(){
                 else
                     continue;
             }
-            if(it == this->right_lane.rend())
+            if(it == this->m_right_lane.rend())
                 std::cout<<"-";
         }
         std::cout << std::endl;
@@ -139,43 +155,43 @@ void road::status(){
 */
 }
 
-int road::tick(){
+int Road::tick(){
     std::cout<<"-------------------------------"<<std::endl;
-    this->tick_tag++;
+    this->m_tick_tag++;
     //spit vehicle for left lane
 
     
     
-    if(this->left_lane_green && 
-        ( this->left_lane.empty() || (this->left_lane.back())->get_position() > MIN_SPACE) 
+    if(this->m_left_lane_green &&
+        ( this->m_left_lane.empty() || (this->m_left_lane.back())->get_position() > MIN_SPACE)
                     && dice::if_dice(50)){
 
         std::shared_ptr<vehicle> p = vehicleFactory::spit_vehicle(
-          this->right_lane.empty()?  this->right_lane.end():
-                           std::next(this->right_lane.begin(),this->right_lane.size()-1),
-                            this->right_lane.end());
+          this->m_right_lane.empty()?  this->m_right_lane.end():
+                           std::next(this->m_right_lane.begin(),this->m_right_lane.size()-1),
+                            this->m_right_lane.end());
 
-        p->set_score(this->tick_tag);
+        p->set_score(this->m_tick_tag);
 
         if (p != nullptr)
-            this->left_lane.push_back(p);
+            this->m_left_lane.push_back(p);
         else
             std::cout << "factory spit out a nullptr"<<std::endl;
     }
 
     //spit vehicle for right lane
-    if(this->right_lane_green && 
-           ( this->right_lane.empty() || (this->right_lane.back())->get_position() > MIN_SPACE)
+    if(this->m_right_lane_green &&
+           ( this->m_right_lane.empty() || (this->m_right_lane.back())->get_position() > MIN_SPACE)
                      &&dice::if_dice(50)){
 
         std::shared_ptr<vehicle> p = vehicleFactory::spit_vehicle(
-          this->left_lane.empty()? this->left_lane.end():
-                           std::next(this->left_lane.begin(),this->left_lane.size()-1),
-                            this->left_lane.end());
-        p->set_score(this->tick_tag);
+          this->m_left_lane.empty()? this->m_left_lane.end():
+                           std::next(this->m_left_lane.begin(),this->m_left_lane.size()-1),
+                            this->m_left_lane.end());
+        p->set_score(this->m_tick_tag);
 
         if (p != nullptr)
-            this->right_lane.push_back(p);
+            this->m_right_lane.push_back(p);
         else
             std::cout << "factory spit out a nullptr"<<std::endl;
     }
@@ -205,21 +221,22 @@ int road::tick(){
 //1) change lane
 //2) move vehicle
 //3) update speed and see if crash
-int road::vehicle_move(){
+int Road::vehicle_move(){
 
 
     //change lane
-    if(this->left_lane_green){
-        //std::cout << "l change lane"<<std::endl;
+    if(this->m_left_lane_green){
+        //std::cout << "start l change lane"<<std::endl;
     
-        if( this->right_lane_green){
-            for(auto it_l = this->left_lane.begin(); it_l!=this->left_lane.end();){
+        if( this->m_right_lane_green){
+            for(auto it_l = this->m_left_lane.begin(); it_l!=this->m_left_lane.end();){
+               //std::cout << "change l lane iteration"<<std::endl;
 
                 int fs,fs_ol,rs_ol;
 
                 if(this->get_vehicle_distances(fs,fs_ol,rs_ol,it_l,true)){
                     if((*it_l)->get_changeLane_willingness(fs,fs_ol,rs_ol))    {
-                        std::cout << "l change"<<std::endl;
+                        //std::cout << "l change"<<std::endl;
                         //as delete will make iterator invalid, 
                         //we move iterator inside "change_lane"
                         change_lane(it_l,true);
@@ -234,25 +251,29 @@ int road::vehicle_move(){
         //move 
         //std::cout <<"move left lane"<<std::endl;
         //std::cout <<"left lane size:"<<this->left_lane.size()<<std::endl;
-        for(auto it_l = this->left_lane.begin(); it_l!=this->left_lane.end();it_l++){
-            move(it_l);
+        //for(auto it_l = this->m_left_lane.begin(); it_l!=this->m_left_lane.end();it_l++){
+            //move(it_l);
+        //}
+        for(auto const &pVehicle:this->m_left_lane){
+            move(pVehicle);
         }
+
         //update speed and see if crash
-        for(auto it_l = this->left_lane.begin(); it_l!=this->left_lane.end();it_l++){
+        for(auto it_l = this->m_left_lane.begin(); it_l!=this->m_left_lane.end();it_l++){
             acceleration_checkcrash(it_l,true);
         }
     }
-
-    if(this->right_lane_green){
-        if( this->left_lane_green){
+    if(this->m_right_lane_green){
+        //std::cout << "start r change lane"<<std::endl;
+        if( this->m_left_lane_green){
             //std::cout << "r change lane"<<std::endl;
-            for(auto it_r = this->right_lane.begin(); it_r!=this->right_lane.end();){
+            for(auto it_r = this->m_right_lane.begin(); it_r!=this->m_right_lane.end();){
+               //std::cout << "change r lane iteration"<<std::endl;
 
                 int fs,fs_ol,rs_ol;
 
                 if(this->get_vehicle_distances(fs,fs_ol,rs_ol,it_r,false)){
                     if((*it_r)->get_changeLane_willingness(fs,fs_ol,rs_ol)){
-                        std::cout << "r change"<<std::endl;
                         change_lane(it_r,false);
                         //std::cout << "l change"<<std::endl;
                     }
@@ -264,73 +285,122 @@ int road::vehicle_move(){
             }
         }
 
-        for(auto it_r=this->right_lane.begin();it_r!=this->right_lane.end();it_r++){
-            move(it_r);
+        for(auto const &pVehicle:this->m_right_lane){
+            move(pVehicle);
         }
-
         //std::cout << "update speed"<<std::endl;
-        for(auto it_r=this->right_lane.begin(); it_r!=this->right_lane.end();it_r++){
+        for(auto it_r=this->m_right_lane.begin(); it_r!=this->m_right_lane.end();it_r++){
             acceleration_checkcrash(it_r,false);
         }
+    }
+
+    if(this->m_left_lane_green && this->m_right_lane_green){
+        for(auto it_l=this->m_left_lane.begin(); it_l!=this->m_left_lane.end();it_l++){
+            for(auto it_r=this->m_right_lane.begin(); it_r!=this->m_right_lane.end();it_r++){
+                if((*it_l)->get_position() < (*it_r)->get_position()){
+                    continue;
+                }
+                else{
+                    if(it_r == m_right_lane.begin())
+                        (*it_l)->set_frontVehicle_otherlane(m_right_lane.end());
+                    else
+                        (*it_l)->set_frontVehicle_otherlane(it_r);
+
+                    break;
+                }
+            }
+        }
+        for(auto it_r=this->m_right_lane.begin(); it_r!=this->m_right_lane.end();it_r++){
+            for(auto it_l=this->m_left_lane.begin(); it_l!=this->m_left_lane.end();it_l++){
+                if((*it_r)->get_position() < (*it_l)->get_position()){
+                    continue;
+                }
+                else{
+                    if(it_r == m_right_lane.begin())
+                        (*it_r)->set_frontVehicle_otherlane(m_left_lane.end());
+                    else
+                        (*it_r)->set_frontVehicle_otherlane(it_l);
+
+                    break;
+                }
+            }
+        }
+
     }
     return 0;
 }    
 
 
-int road::move(std::list<std::shared_ptr<vehicle>>::iterator it){
-    if((*it)->get_changingTick() == this->tick_tag)
-        return (*it)->get_position();
+int Road::move(std::shared_ptr<vehicle> pVehicle){
+    if(pVehicle->get_changingTick() == this->m_tick_tag)
+        return pVehicle->get_position();
 
-    (*it)->set_position((*it)->get_position() + (*it)->get_speed());
+    pVehicle->set_position(pVehicle->get_position() + pVehicle->get_speed());
     //std::cout<<"cur pos is " <<(*it)->get_position()<<std::endl;
-    return (*it)->get_position();
+    return pVehicle->get_position();
 }
 
-int road::change_lane( std::list<std::shared_ptr<vehicle>>::iterator& it,bool if_left){
+int Road::change_lane( std::list<std::shared_ptr<vehicle>>::iterator& it,bool if_left){
     //std::cout << "start changing"<<std::endl;
 
-    std::list<std::shared_ptr<vehicle>>  *this_lane = &(this->right_lane);
-    std::list<std::shared_ptr<vehicle>>  *other_lane =& (this->left_lane);
+    std::list<std::shared_ptr<vehicle>>  *this_lane = &(this->m_right_lane);
+    std::list<std::shared_ptr<vehicle>>  *other_lane =& (this->m_left_lane);
 
     if(if_left){
-        this_lane = &(this->left_lane);
-        other_lane = &(this->right_lane);
+        this_lane = &(this->m_left_lane);
+        other_lane = &(this->m_right_lane);
     }
 
     if( it == this_lane->end()){
         std::cout<<"it is invalid for this lane"<<std::endl;    
         return -1;
     }
-    if((*it)->get_changingTick() == this->tick_tag){
-        //std::cout<<"it is new comer,cannot change twice"<<std::endl;    
+
+    if( it == other_lane->end()){
+        std::cout<<"it is invalid for other lane and it should be in this lane"<<std::endl;    
+        return -1;
+    }
+
+
+
+
+    if((*it)->get_changingTick() == this->m_tick_tag){
+        //std::cout<<"move without change 
+        //as the vehicle has changed once
         it = std::next(it);
         return 0;
     }
 
-    const auto it_cur = it;
+    if(if_left)
+        std::cout << "l change"<<std::endl;
+    else
+        std::cout << "r change"<<std::endl;
+    //#-1 move the vehicle
+   const auto it_cur = it;
+   auto it_moved = it;
 
    if((*it)->get_frontVehicle_otherlane() == other_lane->end()){
         other_lane->push_front(*it);
-        it = other_lane->begin();
+        it_moved = other_lane->begin();
     }
     else{
         auto temp = std::next((*it)->get_frontVehicle_otherlane());
-        if(temp !=other_lane->end()){
+        if(temp == other_lane->end()){
             other_lane->push_back(*it);
-            it = std::prev(other_lane->end(),1);
+            it_moved = std::prev(other_lane->end(),1);
         }
         else
-            it = other_lane->insert(temp,*it);
+            it_moved = other_lane->insert(temp,*it);
     }
 
-    (*it)->set_changingTick(this->tick_tag);
+    (*it_moved)->set_changingTick(this->m_tick_tag);
 
-
+#if 0
     //#0 update moving vehicle's frontVehicle_otherlane
     if(it_cur == this_lane->begin())
-        (*it)->set_frontVehicle_otherlane(this_lane->end(),this_lane->end());
+        (*it_moved)->set_frontVehicle_otherlane(this_lane->end(),this_lane->end());
     else
-        (*it)->set_frontVehicle_otherlane(std::prev(it_cur),this_lane->end());
+        (*it_moved)->set_frontVehicle_otherlane(std::prev(it_cur),this_lane->end());
 
     //#1 update vehicle on this lane 
     //update the-front-car-in-other-lane of the vehicles after moved vehicle 
@@ -339,11 +409,16 @@ int road::change_lane( std::list<std::shared_ptr<vehicle>>::iterator& it,bool if
     auto it_next= std::next(it_cur);
 
     while(it_next != this_lane->end()){
+        //std::cout <<"#1"<<std::endl;
 
         auto temp = (*it_next)->get_frontVehicle_otherlane();
 
         if(temp == other_lane->end())
             break;
+        if(temp == this_lane->end()){
+            std::cout << "temp is end of this lane!"<<std::endl;
+            break;
+        }
         if((*temp)->get_position() > (*it)->get_position()){
             (*it_next)->set_frontVehicle_otherlane(it);
             it_next++;
@@ -366,6 +441,7 @@ int road::change_lane( std::list<std::shared_ptr<vehicle>>::iterator& it,bool if
 
     auto it_next_otherlane = std::next(it);
     while(it_next_otherlane != other_lane->end()){
+        //std::cout <<"#2"<<std::endl;
 
         if((*it_next_otherlane)->get_frontVehicle_otherlane() == it_cur){ //&&
             //(*(*it_next_otherlane)->get_frontVehicle_otherlane())->get_position() > (*it_cur)->get_position())
@@ -376,29 +452,22 @@ int road::change_lane( std::list<std::shared_ptr<vehicle>>::iterator& it,bool if
         else
             break;
     };
+#endif
 
-    //std::cout << "erase"<<std::endl;
-    //std::cout << "erase done?"<<std::endl;
     it = std::next(it_cur);
     this_lane->erase(it_cur); 
-    //std::cout << "erase done!"<<std::endl;
-
-    //std::cout<<"return from change lane"<<std::endl;
     return 0;
-    //update position
-    //(*it)->set_position((*it)->get_position() + (*it)->get_speed());
-    //(*it)->set_tick(tick_tag);
 }
-int road::acceleration_checkcrash( const std::list<std::shared_ptr<vehicle>>::iterator it,bool if_left){
+int Road::acceleration_checkcrash( const std::list<std::shared_ptr<vehicle>>::iterator it,bool if_left){
 
     //assert(green_light == true);
 
-    std::list<std::shared_ptr<vehicle>>* lane = &(this->right_lane);
-    bool *green_light = &(this->right_lane_green);
+    std::list<std::shared_ptr<vehicle>>* lane = &(this->m_right_lane);
+    bool *green_light = &(this->m_right_lane_green);
 
     if(if_left){
-       lane =& (this->left_lane); 
-       green_light = &(this->left_lane_green);
+       lane =& (this->m_left_lane);
+       green_light = &(this->m_left_lane_green);
     }
 
         
@@ -420,7 +489,7 @@ int road::acceleration_checkcrash( const std::list<std::shared_ptr<vehicle>>::it
 
         //std::cout << "check if just changed!"<<std::endl;
 
-        if((*it)->get_changingTick() == this->tick_tag)
+        if((*it)->get_changingTick() == this->m_tick_tag)
             return 0; 
 
 
@@ -445,7 +514,7 @@ int road::acceleration_checkcrash( const std::list<std::shared_ptr<vehicle>>::it
             //nothing happens
     }
     else{
-        if((*it)->get_changingTick() == this->tick_tag)
+        if((*it)->get_changingTick() == this->m_tick_tag)
             return 0; 
         (*it)->acceleration();
     }
