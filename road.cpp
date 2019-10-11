@@ -470,30 +470,25 @@ int Road::acceleration_checkcrash( const std::list<std::shared_ptr<vehicle>>::it
        green_light = &(this->m_left_lane_green);
     }
 
-        
-
     if(*green_light == false)
         return 1; 
+    int space = MIN_SPACE *2;
+    if(it != lane->begin()){
+        space = (*(std::prev(it)))->get_position() - (*it)->get_position();
+    }
 
-    //std::cout << "a_c begin"<<std::endl;
+    if(space <= 0){
+        *green_light = false; 
+        return 1;
+    }
+    if((*it)->get_changingTick() == this->m_tick_tag)
+        return 0; 
+
+    (*it)->accelerate(space);
+
+   /* 
 
     if(it != lane->begin()){
-
-        //std::cout << "check crash"<<std::endl;
-        int space = (*(std::prev(it)))->get_position() - (*it)->get_position();
-
-        if(space <= 0){
-            *green_light = false; 
-            return 1;
-        }
-
-        //std::cout << "check if just changed!"<<std::endl;
-
-        if((*it)->get_changingTick() == this->m_tick_tag)
-            return 0; 
-
-
-
         if( space <=20 && dice::if_dice(100) ){
             (*it)->brake();
         }
@@ -511,15 +506,14 @@ int Road::acceleration_checkcrash( const std::list<std::shared_ptr<vehicle>>::it
         else if(dice::if_dice(95))
             (*it)->acceleration();
         else;
-            //nothing happens
     }
     else{
         if((*it)->get_changingTick() == this->m_tick_tag)
             return 0; 
         (*it)->acceleration();
     }
+*/
 
-    //std::cout << "speed after changing:"<<(*it)->get_speed()<<std::endl;
     return 0;
         
 }

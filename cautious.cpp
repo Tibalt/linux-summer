@@ -12,11 +12,11 @@ bool CautiousDriver::change_lane(int front_space, int frontspace_otherlane,int r
 }
 int CautiousDriver::speed_change(int front_space){
     if(front_space*2 <= MIN_SPACE)
-        return -90;
+        return -35;
     if(front_space <= MIN_SPACE)
-        return -60;
+        return -30;
     if(front_space > MIN_SPACE*2)
-        return  40;
+        return  20;
     if(front_space > MIN_SPACE)
         return  0;
     

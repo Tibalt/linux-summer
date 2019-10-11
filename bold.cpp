@@ -12,11 +12,11 @@ bool BoldDriver::change_lane(int front_space, int frontspace_otherlane,int rears
 }
 int BoldDriver::speed_change(int front_space){
     if(front_space*2 <= MIN_SPACE)
-        return -80;
+        return -30;
     if(front_space <= MIN_SPACE)
-        return -50;
+        return -15;
     if(front_space > MIN_SPACE*2)
-        return  80;
+        return  40;
     if(front_space > MIN_SPACE)
         return  20;
 

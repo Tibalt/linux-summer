@@ -28,8 +28,15 @@ int vehicle::get_speed(){
     return this->m_speed;
 }
 
-int vehicle::set_speed(const unsigned int speed){
-    return this->m_speed=speed;
+int vehicle::set_speed(const int speed){
+    if(speed > this->m_speed_limit)
+        this->m_speed=this->m_speed_limit;
+    else if(speed < 0)
+        this->m_speed=0;
+    else 
+        this->m_speed=speed;
+
+    return this->m_speed;
 }
 
 int vehicle::get_position(){
@@ -45,10 +52,11 @@ unsigned int vehicle::get_frontSpace(){
     else
        return LANE_LENGTH;
 }
-
+/*
 bool vehicle::is_Insane(){
     return this->m_isInsane;
 }
+*/
 
 std::list<std::shared_ptr<vehicle>>::iterator vehicle::get_frontVehicle_otherlane(){
     return m_frontVehicle_otherlane;
@@ -75,7 +83,11 @@ void vehicle::set_changingTick(unsigned int tick){
     this->m_changing_tick = tick;
 }
 
-int vehicle::acceleration(){
+int vehicle::accelerate(int fs){
+    set_speed(this->get_speed() + this->m_vehicle_driver->speed_change(fs));
+    return 0;
+/*
+
     if(this->m_speed >= this->m_speed_limit){
        this->m_speed = this->m_speed_limit; 
        return 0;
@@ -87,9 +99,9 @@ int vehicle::acceleration(){
     }
     else
         set_speed(this->get_speed() + this->m_accLimit);
-    return 0;
+*/
 }
-
+/*
 int vehicle::brake(){
     if(!this->is_Insane()) {
             int speed = this->get_speed() - ceil(static_cast<float>(this->m_accLimit)/this->m_accCo);
@@ -102,6 +114,7 @@ int vehicle::brake(){
     //    set_speed(this->get_speed() - rand()%(this->accLimit));
     return 0;
 }
+*/
 /*
 unsigned int vehicle::get_tick(){
     this->tick;

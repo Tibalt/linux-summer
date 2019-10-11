@@ -14,23 +14,19 @@ public:
     virtual std::string get_name()=0;
     virtual unsigned int get_speedlimit()=0;
 
-    int acceleration();
-    int brake();
 
     int get_speed();
-    int set_speed(unsigned int );
+    int set_speed(const int );
 
     int get_position();
     void set_position(const int pos);
 
 
-    bool is_Insane();
-
-    bool is_Shadow();
-    void set_Shadow(bool);
-
     unsigned int get_frontSpace();
     int set_frontSpace(const unsigned int);
+
+
+    int accelerate(int);
 
     //int get_rearSpace_otherlane();
     //int set_rearSpace_otherlane(const unsigned int);
@@ -75,13 +71,13 @@ private:
     
     //auto frontVehicle_otherlane;
     //std::list<std::shared_ptr<vehicle>>::iterator rearVehicle_leftlane;
-    unsigned int m_speed_limit;
+    int m_speed_limit;
 
     int m_brake_max;
 
-    unsigned int m_position;
-    unsigned int m_speed;
-    unsigned int m_score;
+    int m_position;
+    int m_speed;
+    int m_score;
 
     unsigned int m_changing_tick;
 
