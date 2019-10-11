@@ -24,6 +24,7 @@ public:
 private:
     int change_lane( std::list<std::shared_ptr<vehicle>>::iterator& it,bool);
 
+
     int move( std::shared_ptr<vehicle>);
     int acceleration_checkcrash( const std::list<std::shared_ptr<vehicle>>::iterator it,
                                  bool if_left);

@@ -16,7 +16,7 @@ int main(int argc,char* args[]){
     while(true){
         highway.tick();
         highway.list_vehicles();
-        usleep(1000*100);
+        //usleep(1000);
         if(!highway.is_alive()){
             std::cout << std::endl;
             std::cout << std::endl;
