@@ -22,7 +22,7 @@ public:
     bool is_alive();
 
 private:
-    int change_lane( std::list<std::shared_ptr<vehicle>>::iterator& it,bool);
+    int change_lane( std::list<std::shared_ptr<vehicle>>::iterator it,bool);
 
 
     int move( std::shared_ptr<vehicle>);
